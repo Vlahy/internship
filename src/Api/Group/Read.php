@@ -9,7 +9,7 @@ class Read extends Database
 
     public function read($id)
     {
-        $queryGroup = "SELECT group_name FROM `group` WHERE group_id = :id";
+        $queryGroup = "SELECT group_id, group_name FROM `group` WHERE group_id = :id";
         $queryMentor = "SELECT m.fname, m.lname, i.fname, i.lname FROM internship.mentor m LEFT JOIN intern i on m.group_id = i.group_id WHERE m.group_id = :id";
         $stmt1 = $this->conn->prepare($queryGroup);
         $stmt2 = $this->conn->prepare($queryMentor);
