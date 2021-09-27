@@ -14,7 +14,15 @@ class Read extends Database
         $stmt = $this->conn->prepare($query);
         $stmt->execute(['id' => $id]);
         $rows = $stmt->fetchAll();
-        return json_encode($rows);
+
+        //Checks if there is mentor in database
+        if ($stmt->rowCount() !=0){
+            //Return mentor from database in json format
+            return json_encode($rows);
+        }else{
+            //Add error code
+            return "Error";
+        }
     }
 
 }
