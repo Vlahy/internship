@@ -3,26 +3,30 @@
 namespace Api\Mentor;
 
 use Config\Database;
+use Models\Mentor;
 
-class Read extends Database
+class Read
 {
 
     public function read($id)
     {
+        $database = new Database();
+        $db = $database->getConnection();
 
-        $query = "SELECT fname, lname, email, phone, group_name FROM internship.mentor m LEFT JOIN internship.group g on m.group_id = g.group_id WHERE m.mentor_id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute(['id' => $id]);
-        $rows = $stmt->fetchAll();
+        $items = new Mentor($db);
 
-        //Checks if there is mentor in database
-        if ($stmt->rowCount() !=0){
-            //Return mentor from database in json format
-            return json_encode($rows);
+        $stmt = $items->read($id);
+
+        $num = count($stmt);
+
+        if ($num > 0){
+            echo json_encode($stmt);
         }else{
-            //Add error code
-            return "Error";
+            http_response_code(404);
+            echo json_encode(array("message"=>"No record found"));
         }
     }
+
+
 
 }

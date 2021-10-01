@@ -36,9 +36,14 @@ $router->get('/', function () {
 });
 
 //Route for showing intern data
-$read = new \Api\Intern\Read();
-$router->get('/intern/(\w+)', function ($id) use ($read) {
-    $read->read($id);
+$readIntern = new \Api\Intern\Read();
+$router->get('/intern/(\w+)', function ($id) use ($readIntern) {
+    $readIntern->read($id);
+});
+
+$readMentor = new \Api\Mentor\Read();
+$router->get('/mentor/(\w+)', function ($id) use ($readMentor) {
+    $readMentor->read($id);
 });
 
 $router->run();
