@@ -31,7 +31,7 @@ class Intern implements CrudInterface
         // TODO: Implement create() method.
     }
 
-    public function read($id)
+    public function read($id): array
     {
         $internQuery = "SELECT intern_id, fname, lname, email, phone, group_name FROM internship.intern i LEFT JOIN internship.group g on i.group_id = g.group_id WHERE i.intern_id = :id";
         $commentQuery = "SELECT comment_id, comment, comment_date, m.fname, m.lname FROM internship.comments c LEFT JOIN mentor m on c.mentor_id = m.mentor_id WHERE c.intern_id = :id ORDER BY c.comment_date";

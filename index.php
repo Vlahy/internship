@@ -35,8 +35,10 @@ $router->get('/', function () {
     //header('Location: /src/Api/Intern/Read.php');
 });
 
-$router->get('/intern', function () {
-    header('Location: /src/Api/Intern/Read.php');
+//Route for showing intern data
+$read = new \Api\Intern\Read();
+$router->get('/intern/(\w+)', function ($id) use ($read) {
+    $read->read($id);
 });
 
 $router->run();
