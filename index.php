@@ -17,7 +17,13 @@ $router->setBasePath('/');
 // Custom 404 Handler
 $router->set404(function () {
     header('HTTP/1.1 404 Not Found');
-    echo '404, route not found!';
+    header('Content-Type: application/json');
+
+    $jsonArray = array();
+    $jsonArray['status'] = "404";
+    $jsonArray['status_text'] = "route not defined";
+
+    echo json_encode($jsonArray);
 });
 
 $router->before('GET', '/.*', function () {
