@@ -1,29 +1,27 @@
 <?php
 
-namespace Api\Intern;
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json");
+
+require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
+
+$id = 5;
 
 use Config\Database;
+use Models\Intern;
 
-class Read extends Database
-{
+$database = new Database();
+$db = $database->getConnection();
 
-    public function read($id)
-    {
-        $internQuery = "SELECT fname, lname, email, phone, group_name FROM internship.intern i LEFT JOIN internship.group g on i.group_id = g.group_id WHERE i.intern_id = :id";
-        $commentQuery = "SELECT comment, comment_date, m.fname, m.lname FROM internship.comments c LEFT JOIN mentor m on c.mentor_id = m.mentor_id WHERE c.intern_id = :id ORDER BY c.comment_date";
-        $stmt1 = $this->conn->prepare($internQuery);
-        $stmt2 = $this->conn->prepare($commentQuery);
-        $stmt1->execute(['id' => $id]);
-        $stmt2->execute(['id' => $id]);
-        $rows1 = $stmt1->fetchAll();
-        $rows2 = $stmt2->fetchAll();
+$items = new Intern($db);
 
-        // Checks if there are comments for intern
-        if ($stmt2->rowCount() == 0){
-            return json_encode($rows1);
-        }else {
-            return json_encode(array_merge($rows1,$rows2));
-        }
-    }
+$stmt = $items->read($id);
 
+$num = count($stmt);
+
+if ($num > 0){
+    echo json_encode($stmt);
+}else{
+    http_response_code(404);
+    echo json_encode(array("message"=>"No record found"));
 }

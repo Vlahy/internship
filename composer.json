@@ -3,6 +3,8 @@
     "psr-4": {"":  "src/"}
   },
   "require": {
-    "fakerphp/faker": "^1.16"
+    "fakerphp/faker": "^1.16",
+    "bramus/router": "~1.6",
+    "ext-pdo": "*"
   }
 }

@@ -36,6 +36,16 @@ class ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06
         0 => __DIR__ . '/../..' . '/src',
     );
 
+    public static $prefixesPsr0 = array (
+        'B' => 
+        array (
+            'Bramus' => 
+            array (
+                0 => __DIR__ . '/..' . '/bramus/router/src',
+            ),
+        ),
+    );
+
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
     );
@@ -46,6 +56,7 @@ class ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06
             $loader->prefixLengthsPsr4 = ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06::$prefixDirsPsr4;
             $loader->fallbackDirsPsr4 = ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06::$fallbackDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit6de73c3521f5e9c66fd847c113aa6b06::$classMap;
 
         }, null, ClassLoader::class);

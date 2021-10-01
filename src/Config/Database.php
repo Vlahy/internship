@@ -16,7 +16,7 @@ class Database
 
     //Database connection
 
-    public function __construct()
+    public function getConnection()
     {
         $this->conn = null;
 
@@ -25,8 +25,9 @@ class Database
         try {
             $this->conn = new PDO($dsn, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch (PDOException $e){
-            echo 'Connection error: ' .$e->getMessage();
+            echo 'Connection error: ' . $e->getMessage();
         }
 
         return $this->conn;
