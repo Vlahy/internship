@@ -12,7 +12,7 @@ use Bramus\Router\Router;
 
 $router = new Router();
 
-//$router->setBasePath('/');
+$router->setBasePath('/');
 
 // Custom 404 Handler
 $router->set404(function () {
@@ -29,7 +29,7 @@ $router->get('/', function () {
     //header('Location: /src/Api/Intern/Read.php');
 });
 
-$router->get('/intern/', function () {
+$router->get('/intern', function () {
     header('Location: /src/Api/Intern/Read.php');
 });
 
