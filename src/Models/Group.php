@@ -21,8 +21,6 @@ class Group implements CrudInterface
     public function read($id): array
     {
         $query = "SELECT group_id, group_name FROM `group` WHERE group_id = :id";
-        //$queryMentor = "SELECT m.mentor_id, m.fname, m.lname FROM mentor m WHERE m.group_id = :id";
-        //$queryIntern = "SELECT i.intern_id, i.fname, i.lname FROM intern i WHERE i.group_id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute(['id' => $id]);
         return $stmt->fetchAll();
