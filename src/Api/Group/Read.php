@@ -3,21 +3,27 @@
 namespace Api\Group;
 
 use Config\Database;
+use Models\Group;
 
-class Read extends Database
+class Read
 {
 
     public function read($id)
     {
-        $queryGroup = "SELECT group_id, group_name FROM `group` WHERE group_id = :id";
-        $queryMentor = "SELECT m.fname, m.lname, i.fname, i.lname FROM internship.mentor m LEFT JOIN intern i on m.group_id = i.group_id WHERE m.group_id = :id";
-        $stmt1 = $this->conn->prepare($queryGroup);
-        $stmt2 = $this->conn->prepare($queryMentor);
-        $stmt1->execute(['id' => $id]);
-        $stmt2->execute(['id' => $id]);
-        $rows1 = $stmt1->fetchAll();
-        $rows2 = $stmt2->fetchAll();
-        return json_encode(array_merge($rows1,$rows2));
-    }
+        $database = new Database();
+        $db = $database->getConnection();
 
+        $items = new Group($db);
+
+        $stmt = $items->read($id);
+
+        $num = count($stmt);
+
+        if ($num > 0){
+            return json_encode($stmt);
+        }else{
+            http_response_code(404);
+            return json_encode(array("message"=>"No record found"));
+        }
+    }
 }
