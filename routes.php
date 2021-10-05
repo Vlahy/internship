@@ -41,6 +41,11 @@ $router->get('/intern/(\w+)', function ($id) use ($readIntern) {
     $readIntern->read($id);
 });
 
+$deleteIntern = new \Api\Intern\Delete();
+$router->delete('/intern/(\w+)', function ($id) use ($deleteIntern) {
+   $deleteIntern->delete($id);
+});
+
 $readMentor = new \Api\Mentor\Read();
 $router->get('/mentor/(\w+)', function ($id) use ($readMentor) {
     $readMentor->read($id);
@@ -50,5 +55,6 @@ $readGroup = new \Api\Group\Read();
 $router->get('/group/(\w+)', function ($id) use ($readGroup) {
     echo ($readGroup->read($id));
 });
+
 
 $router->run();

@@ -50,14 +50,16 @@ class Intern implements CrudInterface
         }
     }
 
-    public function update()
+    public function update($id)
     {
         // TODO: Implement update() method.
     }
 
-    public function delete()
+    public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $query = "DELETE FROM intern WHERE intern_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(['id' => $id]);
     }
 
 }
