@@ -38,14 +38,16 @@ class Mentor implements CrudInterface
         return $stmt->fetchAll();
     }
 
-    public function update()
+    public function update($id)
     {
         // TODO: Implement update() method.
     }
 
-    public function delete()
+    public function delete($id)
     {
-        // TODO: Implement delete() method.
+        $query = "DELETE FROM mentor WHERE mentor_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute(['id' => $id]);
     }
 
     public function createComment()
