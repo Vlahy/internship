@@ -14,6 +14,7 @@ use Api\Intern\Delete as InternDelete;
 use Api\Mentor\Create as MentorCreate;
 use Api\Mentor\Read as MentorRead;
 use Api\Mentor\Delete as MentorDelete;
+use Api\Group\Create as GroupCreate;
 use Api\Group\Read as GroupRead;
 use Bramus\Router\Router;
 
@@ -95,13 +96,17 @@ $router->mount('/group', function () use ($router){
 
     //Instantiating classes for Group
     $readGroup = new GroupRead();
+    $createGroup = new GroupCreate();
+
+    //Route for creating Group
+    $router->post('', function () use ($createGroup) {
+        $createGroup->create();
+    });
 
     //Route for getting Group data
     $router->get('/(\w+)', function ($id) use ($readGroup) {
         echo ($readGroup->read($id));
     });
-
-
 
 });
 
