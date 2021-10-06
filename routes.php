@@ -11,6 +11,7 @@ require __DIR__ . '/vendor/autoload.php';
 use Api\Intern\Create as InternCreate;
 use Api\Intern\Read as InternRead;
 use Api\Intern\Delete as InternDelete;
+use Api\Mentor\Create as MentorCreate;
 use Api\Mentor\Read as MentorRead;
 use Api\Mentor\Delete as MentorDelete;
 use Api\Group\Read as GroupRead;
@@ -49,14 +50,14 @@ $router->mount('/intern', function () use ($router){
     $readIntern = new InternRead();
     $deleteIntern = new InternDelete();
 
-    //Route for getting Intern data
-    $router->get('/(\w+)', function ($id) use ($readIntern) {
-        $readIntern->read($id);
-    });
-
     //Route for creating intern
     $router->post('', function () use ($insertIntern) {
         $insertIntern->create();
+    });
+
+    //Route for getting Intern data
+    $router->get('/(\w+)', function ($id) use ($readIntern) {
+        $readIntern->read($id);
     });
 
     //Route for deleting intern from Database
@@ -69,8 +70,14 @@ $router->mount('/intern', function () use ($router){
 $router->mount('/mentor', function () use ($router) {
 
     //Instantiating classes for Mentor
+    $createMentor = new MentorCreate();
     $readMentor = new MentorRead();
     $deleteMentor = new MentorDelete();
+
+    //Route for creating Mentor
+    $router->post('', function () use ($createMentor) {
+        $createMentor->create();
+    });
 
     //Route for getting Mentor data
     $router->get('/(\w+)', function ($id) use ($readMentor) {
