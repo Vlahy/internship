@@ -10,15 +10,11 @@ class Intern implements CrudInterface
     private $conn;
 
     //Intern properties
-    public $intern_id;
-    public $intern_fname;
-    public $intern_lname;
+    public $fname;
+    public $lname;
     public $email;
     public $phone;
     public $group_id;
-    public $group_name;
-    public $comment;
-    public $comment_date;
 
     public function __construct($db)
     {
@@ -28,7 +24,26 @@ class Intern implements CrudInterface
 
     public function create()
     {
-        // TODO: Implement create() method.
+        $query = "INSERT INTO intern SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->fname = htmlspecialchars(strip_tags($this->fname));
+        $this->lname = htmlspecialchars(strip_tags($this->lname));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->group_id = htmlspecialchars(strip_tags($this->group_id));
+
+        $stmt->bindParam(":fname", $this->fname);
+        $stmt->bindParam(":lname", $this->lname);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":group_id", $this->group_id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+
     }
 
     public function read($id): array
