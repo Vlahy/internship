@@ -8,14 +8,6 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 require __DIR__ . '/vendor/autoload.php';
 
-use Api\Intern\Create as InternCreate;
-use Api\Intern\Read as InternRead;
-use Api\Intern\Delete as InternDelete;
-use Api\Mentor\Create as MentorCreate;
-use Api\Mentor\Read as MentorRead;
-use Api\Mentor\Delete as MentorDelete;
-use Api\Group\Create as GroupCreate;
-use Api\Group\Read as GroupRead;
 use Bramus\Router\Router;
 
 $router = new Router();
@@ -29,7 +21,7 @@ $router->set404(function () {
 
     $jsonArray = array();
     $jsonArray['status'] = "404";
-    $jsonArray['status_text'] = "route not defined";
+    $jsonArray['status_text'] = "Route not defined";
 
     echo json_encode($jsonArray);
 });
@@ -40,74 +32,46 @@ $router->before('GET', '/.*', function () {
 
 $router->get('/', function () {
     echo 'hi';
-    //header('Location: /src/Api/Intern/Read.php');
 });
 
 //Defining routes for handling HTTP Request methods for Intern
 $router->mount('/intern', function () use ($router){
 
-    //Instantiating classes for Intern
-    $insertIntern = new InternCreate();
-    $readIntern = new InternRead();
-    $deleteIntern = new InternDelete();
 
     //Route for creating intern
-    $router->post('', function () use ($insertIntern) {
-        $insertIntern->create();
-    });
+    $router->post('', '\Api\Intern\Create@create');
 
     //Route for getting Intern data
-    $router->get('/(\w+)', function ($id) use ($readIntern) {
-        $readIntern->read($id);
-    });
+    $router->get('/(\w+)', '\Api\Intern\Read@read');
 
     //Route for deleting intern from Database
-    $router->delete('/(\w+)', function ($id) use ($deleteIntern) {
-        $deleteIntern->delete($id);
-    });
+    $router->delete('/(\w+)', '\Api\Intern\Delete@delete');
 });
 
 //Defining routes for handling HTTP Request methods for Mentor
 $router->mount('/mentor', function () use ($router) {
 
-    //Instantiating classes for Mentor
-    $createMentor = new MentorCreate();
-    $readMentor = new MentorRead();
-    $deleteMentor = new MentorDelete();
-
     //Route for creating Mentor
-    $router->post('', function () use ($createMentor) {
-        $createMentor->create();
-    });
+    $router->post('', '\Api\Mentor\Create@create');
 
     //Route for getting Mentor data
-    $router->get('/(\w+)', function ($id) use ($readMentor) {
-        $readMentor->read($id);
-    });
+    $router->get('/(\w+)', '\Api\Mentor\Read@read');
 
     //Route for deleting Mentor from Database
-    $router->delete('/(\w+)', function ($id) use ($deleteMentor) {
-        $deleteMentor->delete($id);
-    });
+    $router->delete('/(\w+)', '\Api\Mentor\Delete@delete');
 });
 
 //Defining routes for handling HTTP Request methods for Group
 $router->mount('/group', function () use ($router){
 
-    //Instantiating classes for Group
-    $readGroup = new GroupRead();
-    $createGroup = new GroupCreate();
-
     //Route for creating Group
-    $router->post('', function () use ($createGroup) {
-        $createGroup->create();
-    });
+    $router->post('', '\Api\Group\Create@create');
 
     //Route for getting Group data
-    $router->get('/(\w+)', function ($id) use ($readGroup) {
-        echo ($readGroup->read($id));
-    });
+    $router->get('/(\w+)', '\Api\Group\Read@read');
 
+    //Route for deleting Group from Database
+    $router->delete('/(\w+)', '\Api\Group\Delete@delete');
 });
 
 
