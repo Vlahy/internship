@@ -47,13 +47,13 @@ class Group implements CrudInterface
         $rows3 = $stmt3->fetchAll();
 
         if(count($rows2) > 0 && count($rows3) > 0){
-            return json_encode(array_merge($rows1,$rows2,$rows3));
+            return array_merge($rows1,$rows2,$rows3);
         }elseif (count($rows2) > 0){
-            return json_encode(array_merge($rows1,$rows2));
+            return array_merge($rows1,$rows2);
         }elseif (count($rows3) > 0){
-            return json_encode(array_merge($rows1,$rows3));
+            return array_merge($rows1,$rows3);
         }else{
-            return json_encode($rows1);
+            return $rows1;
         }
     }
 
