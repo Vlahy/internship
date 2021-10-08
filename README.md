@@ -12,10 +12,10 @@ API for tracking groups, mentors and interns.
 5. If You want, You can use Postman to test API
 ```
 
-###POST and PATCH expect parameters in JSON format. Example:
+### POST and PATCH expect parameters in JSON format. Example:
 
 
-###Intern and Mentor
+### Intern and Mentor
 ```
 {
     "fname": "John",
@@ -25,7 +25,7 @@ API for tracking groups, mentors and interns.
     "group_id": "1"
 }
 ```
-###Group
+### Group
 ```
 {
     "group_name": "Some Group"
