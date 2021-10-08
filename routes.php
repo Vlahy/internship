@@ -44,6 +44,9 @@ $router->mount('/intern', function () use ($router){
     //Route for getting Intern data
     $router->get('/(\w+)', '\Api\Intern\Read@read');
 
+    //Route for updating Intern data
+    $router->patch('(\w+)', '\Api\Intern\Update@update');
+
     //Route for deleting intern from Database
     $router->delete('/(\w+)', '\Api\Intern\Delete@delete');
 });

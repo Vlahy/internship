@@ -81,10 +81,10 @@ class Intern implements CrudInterface
         return false;
     }
 
-    public function delete($id)
+    public function delete($id): bool
     {
         $test = $this->conn->prepare("SELECT intern_id FROM intern WHERE intern_id ='" . $id . "'");
-        $test->execute(['id' => $id]);
+        $test->execute();
         $test->fetchAll();
 
         if ($test->rowCount() > 0)
