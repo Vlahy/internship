@@ -20,10 +20,10 @@ class Read
         $num = count($stmt);
 
         if ($num > 0){
-            return json_encode($stmt);
+            echo json_encode($stmt);
         }else{
             http_response_code(404);
-            return json_encode(array("message"=>"No record found"));
+            echo json_encode(array("message"=>"No record found"));
         }
     }
 }
