@@ -75,7 +75,14 @@ class Intern implements CrudInterface
         $this->phone = htmlspecialchars(strip_tags($this->phone));
         $this->group_id = htmlspecialchars(strip_tags($this->group_id));
 
-        if($stmt->execute(['id' => $id])){
+        $stmt->bindParam(":fname", $this->fname);
+        $stmt->bindParam(":lname", $this->lname);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":group_id", $this->group_id);
+        $stmt->bindParam(":id", $id);
+
+        if($stmt->execute()){
             return true;
         }
         return false;
