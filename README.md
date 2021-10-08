@@ -38,6 +38,7 @@ API for tracking groups, mentors and interns.
 Intern: http://localhost/intern/{id}
 Mentor: http://localhost/mentor/{id}
 Group: http://localhost/group/{id}
+Group with paggination: http://localhost/gorup/{id}/?page={pageNumber}
 ```
 
 # POST URL
