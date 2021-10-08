@@ -1,27 +1,30 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-header("Content-Type: application/json");
-
-require_once $_SERVER['DOCUMENT_ROOT'].'/vendor/autoload.php';
-
-$id = 5;
+namespace Api\Intern;
 
 use Config\Database;
 use Models\Intern;
 
-$database = new Database();
-$db = $database->getConnection();
+class Read
+{
 
-$items = new Intern($db);
+    public function read($id)
+    {
+        $database = new Database();
+        $db = $database->getConnection();
 
-$stmt = $items->read($id);
+        $items = new Intern($db);
 
-$num = count($stmt);
+        $stmt = $items->read($id);
 
-if ($num > 0){
-    echo json_encode($stmt);
-}else{
-    http_response_code(404);
-    echo json_encode(array("message"=>"No record found"));
+        $num = count($stmt);
+
+        if ($num > 0){
+            echo json_encode($stmt);
+        }else{
+            http_response_code(404);
+            echo json_encode(array("message"=>"No record found"));
+        }
+    }
+
 }

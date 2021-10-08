@@ -9,8 +9,8 @@ interface CrudInterface
 
     public function read($id);
 
-    public function update();
+    public function update($id);
 
-    public function delete();
+    public function delete($id);
 
 }

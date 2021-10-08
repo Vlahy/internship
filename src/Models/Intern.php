@@ -10,15 +10,11 @@ class Intern implements CrudInterface
     private $conn;
 
     //Intern properties
-    public $intern_id;
-    public $intern_fname;
-    public $intern_lname;
+    public $fname;
+    public $lname;
     public $email;
     public $phone;
     public $group_id;
-    public $group_name;
-    public $comment;
-    public $comment_date;
 
     public function __construct($db)
     {
@@ -26,12 +22,31 @@ class Intern implements CrudInterface
     }
 
 
-    public function create()
+    public function create(): bool
     {
-        // TODO: Implement create() method.
+        $query = "INSERT INTO intern SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->fname = htmlspecialchars(strip_tags($this->fname));
+        $this->lname = htmlspecialchars(strip_tags($this->lname));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->group_id = htmlspecialchars(strip_tags($this->group_id));
+
+        $stmt->bindParam(":fname", $this->fname);
+        $stmt->bindParam(":lname", $this->lname);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":group_id", $this->group_id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
+
     }
 
-    public function read($id)
+    public function read($id): array
     {
         $internQuery = "SELECT intern_id, fname, lname, email, phone, group_name FROM internship.intern i LEFT JOIN internship.group g on i.group_id = g.group_id WHERE i.intern_id = :id";
         $commentQuery = "SELECT comment_id, comment, comment_date, m.fname, m.lname FROM internship.comments c LEFT JOIN mentor m on c.mentor_id = m.mentor_id WHERE c.intern_id = :id ORDER BY c.comment_date";
@@ -42,7 +57,6 @@ class Intern implements CrudInterface
         $rows1 = $stmt1->fetchAll();
         $rows2 = $stmt2->fetchAll();
 
-        // Checks if there are comments for intern
         if ($stmt2->rowCount() == 0){
             return $rows1;
         }else {
@@ -50,14 +64,43 @@ class Intern implements CrudInterface
         }
     }
 
-    public function update()
+    public function update($id): bool
     {
-        // TODO: Implement update() method.
+        $query = "UPDATE intern SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id WHERE intern_id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->fname = htmlspecialchars(strip_tags($this->fname));
+        $this->lname = htmlspecialchars(strip_tags($this->lname));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->group_id = htmlspecialchars(strip_tags($this->group_id));
+
+        $stmt->bindParam(":fname", $this->fname);
+        $stmt->bindParam(":lname", $this->lname);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":group_id", $this->group_id);
+        $stmt->bindParam(":id", $id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
     }
 
-    public function delete()
+    public function delete($id): bool
     {
-        // TODO: Implement delete() method.
+        $test = $this->conn->prepare("SELECT intern_id FROM intern WHERE intern_id ='" . $id . "'");
+        $test->execute();
+        $test->fetchAll();
+
+        if ($test->rowCount() > 0)
+        {
+            $query = "DELETE FROM intern WHERE intern_id = :id";
+            $stmt = $this->conn->prepare($query);
+            return $stmt->execute(['id' => $id]);
+        }
+        return false;
     }
 
 }

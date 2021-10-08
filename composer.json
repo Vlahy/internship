@@ -5,6 +5,7 @@
   "require": {
     "fakerphp/faker": "^1.16",
     "bramus/router": "~1.6",
-    "ext-pdo": "*"
+    "ext-pdo": "*",
+    "ext-json": "*"
   }
 }
