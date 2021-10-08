@@ -31,12 +31,30 @@ class Group implements CrudInterface
 
     }
 
-    public function read($id): array
+    public function read($id)
     {
-        $query = "SELECT group_id, group_name FROM `group` g WHERE g.group_id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute(['id' => $id]);
-        return $stmt->fetchAll();
+        $groupQuery = "SELECT group_id, group_name FROM `group` g WHERE g.group_id = :id";
+        $mentorQuery = "SELECT * FROM mentor m WHERE m.group_id = :id";
+        $internQuery = "SELECT * FROM intern i WHERE i.group_id = :id";
+        $stmt1 = $this->conn->prepare($groupQuery);
+        $stmt2 = $this->conn->prepare($mentorQuery);
+        $stmt3 = $this->conn->prepare($internQuery);
+        $stmt1->execute(['id' => $id]);
+        $stmt2->execute(['id' => $id]);
+        $stmt3->execute(['id' => $id]);
+        $rows1 = $stmt1->fetchAll();
+        $rows2 = $stmt2->fetchAll();
+        $rows3 = $stmt3->fetchAll();
+
+        if(count($rows2) > 0 && count($rows3) > 0){
+            return json_encode(array_merge($rows1,$rows2,$rows3));
+        }elseif (count($rows2) > 0){
+            return json_encode(array_merge($rows1,$rows2));
+        }elseif (count($rows3) > 0){
+            return json_encode(array_merge($rows1,$rows3));
+        }else{
+            return json_encode($rows1);
+        }
     }
 
     public function update($id): bool

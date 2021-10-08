@@ -17,10 +17,8 @@ class Read
 
         $stmt = $items->read($id);
 
-        $num = count($stmt);
-
-        if ($num > 0){
-            echo json_encode($stmt);
+        if (count(json_decode($stmt))){
+            echo $stmt;
         }else{
             http_response_code(404);
             echo json_encode(array("message"=>"No record found"));
