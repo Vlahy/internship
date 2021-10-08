@@ -54,16 +54,35 @@ class Mentor implements CrudInterface
         return $stmt->fetchAll();
     }
 
-    public function update($id)
+    public function update($id): bool
     {
-        // TODO: Implement update() method.
+        $query = "UPDATE mentor SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id WHERE mentor_id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->fname = htmlspecialchars(strip_tags($this->fname));
+        $this->lname = htmlspecialchars(strip_tags($this->lname));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->group_id = htmlspecialchars(strip_tags($this->group_id));
+
+        $stmt->bindParam(":fname", $this->fname);
+        $stmt->bindParam(":lname", $this->lname);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":phone", $this->phone);
+        $stmt->bindParam(":group_id", $this->group_id);
+        $stmt->bindParam(":id", $id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
     }
 
     public function delete($id): bool
     {
 
         $test = $this->conn->prepare("SELECT mentor_id FROM mentor WHERE mentor_id ='" . $id . "'");
-        $test->execute(['id' => $id]);
+        $test->execute();
         $test->fetchAll();
         if ($test->rowCount() > 0) {
 

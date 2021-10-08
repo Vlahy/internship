@@ -60,6 +60,9 @@ $router->mount('/mentor', function () use ($router) {
     //Route for getting Mentor data
     $router->get('/(\w+)', '\Api\Mentor\Read@read');
 
+    //Route for updating Mentor data
+    $router->patch('(\w+)', '\Api\Mentor\Update@update');
+
     //Route for deleting Mentor from Database
     $router->delete('/(\w+)', '\Api\Mentor\Delete@delete');
 });
@@ -72,6 +75,9 @@ $router->mount('/group', function () use ($router){
 
     //Route for getting Group data
     $router->get('/(\w+)', '\Api\Group\Read@read');
+
+    //Route for updating Group data
+    $router->patch('(\w+)', '\Api\Group\Update@update');
 
     //Route for deleting Group from Database
     $router->delete('/(\w+)', '\Api\Group\Delete@delete');

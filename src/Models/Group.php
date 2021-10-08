@@ -33,15 +33,26 @@ class Group implements CrudInterface
 
     public function read($id): array
     {
-        $query = "SELECT group_id, group_name FROM `group` WHERE group_id = :id";
+        $query = "SELECT group_id, group_name FROM `group` g WHERE g.group_id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->execute(['id' => $id]);
         return $stmt->fetchAll();
     }
 
-    public function update($id)
+    public function update($id): bool
     {
-        // TODO: Implement update() method.
+        $query = "UPDATE `group` g SET g.group_name = :group_name WHERE g.group_id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->group_name = htmlspecialchars(strip_tags($this->group_name));
+
+        $stmt->bindParam(":group_name", $this->group_name);
+        $stmt->bindParam(":id", $id);
+
+        if($stmt->execute()){
+            return true;
+        }
+        return false;
     }
 
     public function delete($id): bool
