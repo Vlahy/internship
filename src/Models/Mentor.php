@@ -23,7 +23,7 @@ class Mentor implements CrudInterface
         $this->conn = $db;
     }
 
-    public function create()
+    public function create(): bool
     {
         $query = "INSERT INTO mentor SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id";
         $stmt = $this->conn->prepare($query);
@@ -59,11 +59,19 @@ class Mentor implements CrudInterface
         // TODO: Implement update() method.
     }
 
-    public function delete($id)
+    public function delete($id): bool
     {
-        $query = "DELETE FROM mentor WHERE mentor_id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute(['id' => $id]);
+
+        $test = $this->conn->prepare("SELECT mentor_id FROM mentor WHERE mentor_id ='" . $id . "'");
+        $test->execute(['id' => $id]);
+        $test->fetchAll();
+        if ($test->rowCount() > 0) {
+
+            $query = "DELETE FROM mentor WHERE mentor_id = :id";
+            $stmt = $this->conn->prepare($query);
+            return $stmt->execute(['id'=>$id]);
+        }
+        return false;
     }
 
     public function createComment()

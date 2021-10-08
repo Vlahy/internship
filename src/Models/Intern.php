@@ -22,7 +22,7 @@ class Intern implements CrudInterface
     }
 
 
-    public function create()
+    public function create(): bool
     {
         $query = "INSERT INTO intern SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id";
         $stmt = $this->conn->prepare($query);
@@ -57,7 +57,6 @@ class Intern implements CrudInterface
         $rows1 = $stmt1->fetchAll();
         $rows2 = $stmt2->fetchAll();
 
-        // Checks if there are comments for intern
         if ($stmt2->rowCount() == 0){
             return $rows1;
         }else {
@@ -65,16 +64,36 @@ class Intern implements CrudInterface
         }
     }
 
-    public function update($id)
+    public function update($id): bool
     {
-        // TODO: Implement update() method.
+        $query = "UPDATE intern SET fname = :fname, lname = :lname, email = :email, phone = :phone, group_id = :group_id WHERE intern_id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $this->fname = htmlspecialchars(strip_tags($this->fname));
+        $this->lname = htmlspecialchars(strip_tags($this->lname));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->phone = htmlspecialchars(strip_tags($this->phone));
+        $this->group_id = htmlspecialchars(strip_tags($this->group_id));
+
+        if($stmt->execute(['id' => $id])){
+            return true;
+        }
+        return false;
     }
 
     public function delete($id)
     {
-        $query = "DELETE FROM intern WHERE intern_id = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute(['id' => $id]);
+        $test = $this->conn->prepare("SELECT intern_id FROM intern WHERE intern_id ='" . $id . "'");
+        $test->execute(['id' => $id]);
+        $test->fetchAll();
+
+        if ($test->rowCount() > 0)
+        {
+            $query = "DELETE FROM intern WHERE intern_id = :id";
+            $stmt = $this->conn->prepare($query);
+            return $stmt->execute(['id' => $id]);
+        }
+        return false;
     }
 
 }

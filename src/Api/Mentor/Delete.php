@@ -9,12 +9,17 @@ class Delete
 {
     public function delete($id)
     {
+
         $database = new Database();
         $db = $database->getConnection();
 
         $items = new Mentor($db);
-        $items->delete($id);
 
-        echo json_encode(array("message" => "Mentor deleted successfully"));
+        if($items->delete($id)){
+                http_response_code(200);
+                echo json_encode(array("message" => "Mentor deleted successfully."));
+            }else{
+                echo json_encode(array("message" => "Failed to delete mentor."));
+            }
     }
 }
