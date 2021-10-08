@@ -59,13 +59,32 @@ class Group implements CrudInterface
             $testIntern->execute();
             $testIntern->fetchAll();
 
-            if($testIntern->rowCount() > 0){
-                $queryUpdate = "UPDATE intern i SET i.group_id = null WHERE i.group_id = :id";
-                $stmt2 = $this->conn->prepare($queryUpdate);
+            $testMentor = $this->conn->prepare("SELECT group_id FROM mentor m WHERE m.group_id ='" . $id . "'");
+            $testMentor->execute();
+            $testMentor->fetchAll();
+
+            if($testIntern->rowCount() > 0 && $testMentor->rowCount() > 0){
+                $queryUpdateIntern = "UPDATE intern i SET i.group_id = null WHERE i.group_id = :id";
+                $queryUpdateMentor = "UPDATE mentor m SET m.group_id = null WHERE m.group_id = :id";
+                $stmt2 = $this->conn->prepare($queryUpdateIntern);
+                $stmt3 = $this->conn->prepare($queryUpdateMentor);
+                $stmt1->execute(['id' => $id]);
+                $stmt2->execute(['id' => $id]);
+                $stmt3->execute(['id' => $id]);
+                return true;
+            }elseif($testIntern->rowCount() > 0) {
+                $queryUpdateIntern = "UPDATE intern i SET i.group_id = null WHERE i.group_id = :id";
+                $stmt2 = $this->conn->prepare($queryUpdateIntern);
                 $stmt1->execute(['id' => $id]);
                 $stmt2->execute(['id' => $id]);
                 return true;
-            }else {
+            }elseif($testMentor->rowCount() > 0){
+                $queryUpdateMentor = "UPDATE mentor m SET m.group_id = null WHERE m.group_id = :id";
+                $stmt2 = $this->conn->prepare($queryUpdateMentor);
+                $stmt1->execute(['id' => $id]);
+                $stmt2->execute(['id' => $id]);
+                return true;
+            }else{
                 $stmt1->execute(['id' => $id]);
                 return true;
             }
